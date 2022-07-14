@@ -4,6 +4,7 @@ const userController = require("../controllers/userController")
 const bookController = require("../controllers/bookController")
 const reviewController = require("../controllers/reviewController")
 const middleWare = require("../middleware/auth")
+const uploadFiles = require("../AWS S3/aws")
 
 
 // User APIs
@@ -30,6 +31,10 @@ router.post('/books/:bookId/review', reviewController.createReview)
 router.put('/books/:bookId/review/:reviewId', reviewController.updateReviews)
 
 router.delete('/books/:bookId/review/:reviewId', reviewController.deleteReview)
+
+
+// Upload File
+router.post('/upload', uploadFiles.uploadFunction)
 
 
 // if api is invalid OR wrong URL
