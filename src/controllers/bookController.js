@@ -3,13 +3,14 @@ const userModel = require("../models/userModel")
 const reviewModel = require("../models/reviewModel")
 const validation = require("../validation/validate")
 const moment = require('moment')
+const updateFiles = require('../AWS S3/aws')
 
 
 const createBook = async function(req, res){
     try{
         let data = req.body
         if(Object.keys(data).length == 0) return res.status(400).send({status: false, message: "Field Can't Empty.Please Enter Some Details" })
-
+        // console.log(data)
         // Title Validation
         if(!validation.isValid(data.title)) return res.status(400).send({status: false, message: "Title is Required.." })
         
@@ -49,6 +50,8 @@ const createBook = async function(req, res){
         if (!moment(data.releasedAt, "YYYY-MM-DD", true).isValid()) return res.status(400).send({ status: false, message: "Please enter Date In YYYY-MM-DD Format" })
 
         if(data.isDeleted) data.deletedAt = new Date().toISOString();
+
+        data.bookCover = await updateFiles.uploadFile(req.files[0])
         
         let bookData = await bookModel.create(data)
         return res.status(201).send({status: true, message: "Success", data: bookData})

@@ -33,10 +33,6 @@ router.put('/books/:bookId/review/:reviewId', reviewController.updateReviews)
 router.delete('/books/:bookId/review/:reviewId', reviewController.deleteReview)
 
 
-// Upload File
-router.post('/upload', uploadFiles.uploadFunction)
-
-
 // if api is invalid OR wrong URL
 router.all("/**", function (req, res) {
     res.status(404).send({
